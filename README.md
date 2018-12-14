@@ -1,7 +1,5 @@
 # Reveal调试配置
 
-首先下载
-
 1. 复制 RevealServerCommands.py 到  /Applications/Reveal.app/Contents/SharedSupport/Scripts/
 2. 在~/.lldbinit 中添加：
 ```
