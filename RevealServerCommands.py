@@ -8,8 +8,7 @@ import argparse
 
 
 # Global constants
-# This path assumes that the script is stored in Contents/SharedSupport/Scripts inside Reveal bundle.
-revealLocalSharedSupportPath = os.path.dirname(os.path.dirname(__file__))
+revealLocalSharedSupportPath = "/Applications/Reveal.app/Contents/SharedSupport/"
 
 
 # Entry point
@@ -83,8 +82,8 @@ def HandleRevealCommand(debugger, command, exe_ctx, result, internal_dict):
     args.func(loader, result, args)
 
 def HandleRevealLoadCommand(loader, result, args):
-    # If target is running in the Simulator, load local Reveal Server
-    if TargetIsSimulator(loader.process.target):
+    # If target is running locally (i.e. in the Simulator or UIKit Host), load local Reveal Server
+    if TargetIsLocal(loader.process.target):
         binaryPath = loader.localRevealServerBinaryPath()
         loader.injectServer(binaryPath, result)
     else:
@@ -132,7 +131,7 @@ class RevealLoader(object):
         self.process = frame.thread.process
 
     def localRevealServerBinaryPath(self):
-        if self.process.target.triple.endswith("apple-tvos"):
+        if "apple-tvos" in self.process.target.triple:
             librariesDirectory = "tvOS-Libraries"
         else:
             # iOS or watchOS
@@ -191,10 +190,12 @@ class RevealLoader(object):
 
 # Target info utilities
 def TargetIsCompatible(target):
-    return target.triple.endswith("apple-ios") or target.triple.endswith("apple-tvos") or target.triple.endswith("apple-watchos")
+    architecture = target.triple
+    return "apple-ios" in architecture or "apple-tvos" in architecture or "apple-watchos" in architecture
 
-def TargetIsSimulator(target):
-    return target.platform.GetName().endswith("simulator")
+def TargetIsLocal(target):
+    platformName = target.platform.GetName()
+    return platformName.endswith("simulator") or platformName.endswith("host")
 
 
 # Process info utilities
