@@ -1,16 +1,11 @@
 # Reveal调试配置
 
-<<<<<<< HEAD
 首先从 https://github.com/vin-zhou/Reveal 中， 下载
 RevealServerCommands.py 和 reveal_server_build_phase.sh 到本地  /Applications/Reveal.app/Contents/SharedSupport/Scripts/ 文件夹下。（若无Scripts文件夹，则新建之）
 
 然后：
 
 1. 在~/.lldbinit 中添加：
-=======
-1. 复制 RevealServerCommands.py 到  /Applications/Reveal.app/Contents/SharedSupport/Scripts/
-2. 在~/.lldbinit 中添加：
->>>>>>> 48bdf94d115a06c009471e68eebcec107a3fc3f3
 ```
 ### Reveal LLDB commands support
 command script import /Applications/Reveal.app/Contents/SharedSupport/Scripts/RevealServerCommands.py
